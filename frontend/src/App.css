@@ -1,0 +1,95 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, black, #0f172a);
+  color: white;
+}
+
+/* Navbar */
+nav {
+  padding: 15px;
+  text-align: center;
+  border-bottom: 2px solid cyan;
+}
+
+nav a {
+  color: cyan;
+  margin: 0 10px;
+  text-decoration: none;
+}
+
+/* Container */
+.container {
+  max-width: 500px;
+  margin: 40px auto;
+}
+
+/* Form */
+form {
+  background: #020617;
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid cyan;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background: black;
+  border: 1px solid cyan;
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  background: cyan;
+  border: none;
+}
+
+button:hover {
+  background: white;
+}
+
+/* Dashboard */
+.dashboard {
+  background: #020617;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.total-box {
+  background: cyan;
+  color: black;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.expense-item {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid cyan;
+  padding: 10px;
+  margin: 5px 0;
+}
+
+/* Spinner */
+.spinner {
+  border: 3px solid #222;
+  border-top: 3px solid cyan;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
