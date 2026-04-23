@@ -1,37 +1,33 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import API from "../services/api";
+import FormCard from "../components/FormCard";
 
 export default function Register() {
-  const [form, setForm] = useState({ name:"", email:"", password:"" });
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [form, setForm] = useState({});
+  const [error, setError] = useState("");
 
-  const submit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true);
-      const res = await API.post("/auth/register", form);
-      localStorage.setItem("token", res.data.token);
-      toast.success("Registered");
-      navigate("/dashboard");
+      await API.post("/auth/register", form);
+      window.location.href = "/";
     } catch {
-      toast.error("Error");
-    } finally {
-      setLoading(false);
+      setError("Registration failed");
     }
   };
 
   return (
-    <div className="container">
-      <form onSubmit={submit}>
-        <h2>Register</h2>
-        <input placeholder="Name" onChange={(e)=>setForm({...form,name:e.target.value})}/>
-        <input placeholder="Email" onChange={(e)=>setForm({...form,email:e.target.value})}/>
-        <input type="password" onChange={(e)=>setForm({...form,password:e.target.value})}/>
-        <button>{loading ? <div className="spinner"/> : "Register"}</button>
+    <FormCard title="Register">
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Name"
+          onChange={e => setForm({...form, name: e.target.value})}/>
+        <input placeholder="Email"
+          onChange={e => setForm({...form, email: e.target.value})}/>
+        <input type="password" placeholder="Password"
+          onChange={e => setForm({...form, password: e.target.value})}/>
+        {error && <p className="error">{error}</p>}
+        <button>Register</button>
       </form>
-    </div>
+    </FormCard>
   );
 }

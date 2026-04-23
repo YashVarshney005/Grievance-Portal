@@ -1,36 +1,40 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import API from "../services/api";
+import FormCard from "../components/FormCard";
 
 export default function Login() {
-  const [form, setForm] = useState({ email:"", password:"" });
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
-  const submit = async (e) => {
+  const validateEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(form.email)) {
+      return setError("Invalid email format");
+    }
+
     try {
-      setLoading(true);
       const res = await API.post("/auth/login", form);
       localStorage.setItem("token", res.data.token);
-      toast.success("Login Success");
-      navigate("/dashboard");
+      window.location.href = "/dashboard";
     } catch {
-      toast.error("Invalid Credentials");
-    } finally {
-      setLoading(false);
+      setError("Login failed");
     }
   };
 
   return (
-    <div className="container">
-      <form onSubmit={submit}>
-        <h2>Login</h2>
-        <input placeholder="Email" onChange={(e)=>setForm({...form,email:e.target.value})}/>
-        <input type="password" onChange={(e)=>setForm({...form,password:e.target.value})}/>
-        <button>{loading ? <div className="spinner"/> : "Login"}</button>
+    <FormCard title="Login">
+      <form onSubmit={handleSubmit}>
+        <input placeholder="Email"
+          onChange={e => setForm({...form, email: e.target.value})} />
+        <input type="password" placeholder="Password"
+          onChange={e => setForm({...form, password: e.target.value})} />
+        {error && <p className="error">{error}</p>}
+        <button>Login</button>
       </form>
-    </div>
+    </FormCard>
   );
 }
